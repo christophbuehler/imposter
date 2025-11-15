@@ -8,22 +8,34 @@
   </head>
   <body class="min-h-screen bg-slate-950 text-slate-100">
     <main class="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 px-4 py-10">
-      <header class="rounded-3xl bg-slate-900/70 p-6 shadow-2xl shadow-indigo-500/10">
-        <p class="text-sm uppercase tracking-[0.3em] text-indigo-300">Partyspiel</p>
+      <header
+        class="rounded-3xl bg-slate-900/70 p-6 shadow-2xl shadow-indigo-500/10"
+      >
+        <p class="text-sm uppercase tracking-[0.3em] text-indigo-300">
+          Partyspiel
+        </p>
         <h1 class="mt-3 text-3xl font-semibold text-white">Imposter</h1>
         <p class="mt-2 text-slate-300">
-          Füge 3-5 Spieler:innen hinzu, starte eine Runde und gib das Gerät in der angezeigten Reihenfolge weiter.
-          Eine Person bekommt den geheimen Begriff, eine Person die Rolle als Impostor. Nach der Ausgabe beginnt ihr mit
-          Fragen und versucht, die Täuschung aufzudecken.
+          Füge 3-5 Spieler:innen hinzu, starte eine Runde und gib das Gerät in
+          der angezeigten Reihenfolge weiter. Eine Person bekommt den geheimen
+          Begriff, eine Person die Rolle als Impostor. Nach der Ausgabe beginnt
+          ihr mit Fragen und versucht, die Täuschung aufzudecken.
         </p>
       </header>
 
-      <section class="rounded-3xl bg-slate-900/60 p-6 shadow-xl shadow-black/40">
+      <section
+        id="setup-section"
+        class="rounded-3xl bg-slate-900/60 p-6 shadow-xl shadow-black/40"
+      >
         <div class="flex items-center justify-between gap-4">
           <h2 class="text-xl font-semibold">1. Namen vorbereiten</h2>
           <p id="player-count" class="text-sm text-slate-400">0/5</p>
         </div>
-        <form id="player-form" class="mt-5 flex flex-col gap-4" autocomplete="off">
+        <form
+          id="player-form"
+          class="mt-5 flex flex-col gap-4"
+          autocomplete="off"
+        >
           <div class="flex flex-col gap-3 sm:flex-row">
             <label class="sr-only" for="player-name">Spielername</label>
             <input
@@ -38,59 +50,98 @@
             <button
               id="add-player"
               type="submit"
-              class="rounded-2xl bg-indigo-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-indigo-400">
+              class="rounded-2xl bg-indigo-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-indigo-400"
+            >
               Hinzufügen
             </button>
           </div>
-          <p id="player-feedback" class="text-sm text-slate-400">Mindestens 3, maximal 5 Personen.</p>
+          <p id="player-feedback" class="text-sm text-slate-400">
+            Mindestens 3, maximal 5 Personen.
+          </p>
         </form>
         <ul id="player-list" class="mt-4 flex flex-wrap gap-2"></ul>
         <div class="mt-6 flex flex-wrap gap-3">
           <button
             id="start-game"
             type="button"
-            class="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-base font-semibold text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-800/60">
+            class="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-base font-semibold text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-800/60"
+          >
             Runde starten
           </button>
           <button
             id="reset-players"
             type="button"
-            class="rounded-2xl border border-slate-700 px-4 py-3 text-base font-semibold text-slate-200 transition hover:bg-slate-800">
+            class="rounded-2xl border border-slate-700 px-4 py-3 text-base font-semibold text-slate-200 transition hover:bg-slate-800"
+          >
             Namen zurücksetzen
           </button>
         </div>
       </section>
 
-      <section class="rounded-3xl bg-slate-900/60 p-6 shadow-xl shadow-black/40">
-        <h2 class="text-xl font-semibold">2. Runde spielen</h2>
-        <p id="status-title" class="mt-2 text-lg font-medium text-slate-200">Noch keine Runde aktiv.</p>
-        <p id="status-subtitle" class="text-sm text-slate-400">Sobald du startest, erscheint hier die Reihenfolge.</p>
+      <section
+        id="round-section"
+        class="hidden rounded-3xl bg-slate-900/60 p-6 shadow-xl shadow-black/40"
+      >
+        <div
+          class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <h2 class="text-xl font-semibold">2. Runde spielen</h2>
+          <p
+            id="progress-indicator"
+            class="hidden rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-200"
+          ></p>
+        </div>
+        <p id="status-title" class="mt-2 text-lg font-medium text-slate-200">
+          Noch keine Runde aktiv.
+        </p>
+        <p id="status-subtitle" class="text-sm text-slate-400">
+          Sobald du startest, erscheint hier die Reihenfolge.
+        </p>
+        <p
+          id="order-note"
+          class="mt-2 hidden text-xs uppercase tracking-[0.3em] text-slate-500"
+        >
+          Zufällige Reihenfolge pro Runde
+        </p>
 
         <div
           id="reveal-card"
-          class="mt-6 rounded-3xl border border-slate-800 bg-slate-950/60 p-6 text-center shadow-inner shadow-black/40">
-          <p id="reveal-label" class="text-sm uppercase tracking-[0.4em] text-slate-500">Bereit?</p>
-          <p id="reveal-text" class="mt-3 text-3xl font-semibold text-white">Tippe auf "Anzeigen".</p>
-          <p id="reveal-hint" class="mt-2 text-sm text-slate-400">Nur die aktuelle Person darf schauen.</p>
+          class="mt-6 rounded-3xl border border-slate-800 bg-slate-950/60 p-6 text-center shadow-inner shadow-black/40"
+        >
+          <p
+            id="reveal-label"
+            class="text-sm uppercase tracking-[0.4em] text-slate-500"
+          >
+            Bereit?
+          </p>
+          <p id="reveal-text" class="mt-3 text-3xl font-semibold text-white">
+            Tippe auf "Anzeigen".
+          </p>
+          <p id="reveal-hint" class="mt-2 text-sm text-slate-400">
+            Nur die aktuelle Person darf schauen.
+          </p>
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3">
           <button
             id="show-card"
             type="button"
-            class="flex-1 rounded-2xl bg-indigo-500 px-4 py-3 text-base font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:bg-indigo-900/70">
+            class="flex-1 rounded-2xl bg-indigo-500 px-4 py-3 text-base font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:bg-indigo-900/70"
+          >
             Anzeigen
           </button>
           <button
             id="next-player"
             type="button"
-            class="flex-1 rounded-2xl bg-slate-800 px-4 py-3 text-base font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-900/60">
+            class="flex-1 rounded-2xl bg-slate-800 px-4 py-3 text-base font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-900/60"
+          >
             Verstecken & Weitergeben
           </button>
           <button
             id="restart-round"
             type="button"
-            class="rounded-2xl border border-slate-700 px-4 py-3 text-base font-semibold text-slate-200 transition hover:bg-slate-800">
+            class="rounded-2xl border border-slate-700 px-4 py-3 text-base font-semibold text-slate-200 transition hover:bg-slate-800"
+          >
             Neue Runde
           </button>
         </div>
@@ -105,26 +156,159 @@
       (() => {
         const storageKey = "imposter-game-players";
         const germanWords = [
-          { word: "Kaffeemaschine", hint: "Beliebtes Bürogerät für den dringend benötigten Koffein-Schub." },
-          { word: "Gartenstuhl", hint: "Steht meist im Sommer draußen und lädt zum Zurücklehnen ein." },
-          { word: "Regenschirm", hint: "Hilft dir, trocken zu bleiben, wenn der Himmel schlechte Laune hat." },
-          { word: "Kletterhalle", hint: "Hier sichert man sich gegenseitig und schaut hoch hinaus." },
+          {
+            word: "Kaffeemaschine",
+            hint: "Beliebtes Bürogerät für den dringend benötigten Koffein-Schub.",
+          },
+          {
+            word: "Gartenstuhl",
+            hint: "Steht meist im Sommer draußen und lädt zum Zurücklehnen ein.",
+          },
+          {
+            word: "Regenschirm",
+            hint: "Hilft dir, trocken zu bleiben, wenn der Himmel schlechte Laune hat.",
+          },
+          {
+            word: "Kletterhalle",
+            hint: "Hier sichert man sich gegenseitig und schaut hoch hinaus.",
+          },
           { word: "Vulkan", hint: "Ein Berg, der manchmal Feuer speit." },
-          { word: "Schallplatte", hint: "Dreht sich gemütlich im Kreis und bringt warmen Vinyl-Klang." },
+          {
+            word: "Schallplatte",
+            hint: "Dreht sich gemütlich im Kreis und bringt warmen Vinyl-Klang.",
+          },
           { word: "Seifenspender", hint: "Drücken, reinigen, fertig." },
-          { word: "Bauernmarkt", hint: "Hier duftet es nach frischem Brot und Kräutern." },
-          { word: "Laternenfest", hint: "Lichtermeer in der Nacht, besonders im Herbst beliebt." },
-          { word: "Fahrradhelm", hint: "Schützt den Kopf, wenn du auf zwei Rädern unterwegs bist." },
-          { word: "Picknickkorb", hint: "Randvoll mit Snacks für einen Nachmittag im Park." },
-          { word: "Sternwarte", hint: "Hier schaut man nicht direkt, sondern durch große Teleskope." },
-          { word: "Eislaufbahn", hint: "Glatt, kalt und perfekt für Pirouetten." },
-          { word: "Schlittenhunde", hint: "Dieses Team zieht dich durch verschneite Landschaften." },
-          { word: "Waldorchester", hint: "Viele Instrumente, ein gemeinsamer Klang im Grünen." },
-          { word: "Kochkurs", hint: "Hier schnippelt man gemeinsam und lernt neue Rezepte." },
-          { word: "Schneekugel", hint: "Shake it! Danach tanzen Flocken um eine kleine Welt." },
-          { word: "Gewächshaus", hint: "Hier herrscht immer Frühling, egal welches Wetter draußen wartet." },
-          { word: "Puzzleabend", hint: "Ein Tisch voller Teile, Geduld und Teamwork." },
-          { word: "Konzertticket", hint: "Das Eintritts-Band in eine laute Nacht." }
+          {
+            word: "Bauernmarkt",
+            hint: "Hier duftet es nach frischem Brot und Kräutern.",
+          },
+          {
+            word: "Laternenfest",
+            hint: "Lichtermeer in der Nacht, besonders im Herbst beliebt.",
+          },
+          {
+            word: "Fahrradhelm",
+            hint: "Schützt den Kopf, wenn du auf zwei Rädern unterwegs bist.",
+          },
+          {
+            word: "Picknickkorb",
+            hint: "Randvoll mit Snacks für einen Nachmittag im Park.",
+          },
+          {
+            word: "Sternwarte",
+            hint: "Hier schaut man nicht direkt, sondern durch große Teleskope.",
+          },
+          {
+            word: "Eislaufbahn",
+            hint: "Glatt, kalt und perfekt für Pirouetten.",
+          },
+          {
+            word: "Schlittenhunde",
+            hint: "Dieses Team zieht dich durch verschneite Landschaften.",
+          },
+          {
+            word: "Waldorchester",
+            hint: "Viele Instrumente, ein gemeinsamer Klang im Grünen.",
+          },
+          {
+            word: "Kochkurs",
+            hint: "Hier schnippelt man gemeinsam und lernt neue Rezepte.",
+          },
+          {
+            word: "Schneekugel",
+            hint: "Shake it! Danach tanzen Flocken um eine kleine Welt.",
+          },
+          {
+            word: "Gewächshaus",
+            hint: "Hier herrscht immer Frühling, egal welches Wetter draußen wartet.",
+          },
+          {
+            word: "Puzzleabend",
+            hint: "Ein Tisch voller Teile, Geduld und Teamwork.",
+          },
+          {
+            word: "Konzertticket",
+            hint: "Das Eintritts-Band in eine laute Nacht.",
+          },
+
+          // Neue zufällige (und teils freche) Ergänzungen
+          {
+            word: "Biergarten",
+            hint: "Sonnenschein, Maßkrüge und zünftige Brotzeit.",
+          },
+          {
+            word: "Wärmflasche",
+            hint: "Dein kuscheliger Bettgefährte an kalten Nächten.",
+          },
+          { word: "Kondomautomat", hint: "24/7 bereit, wenn’s spontan wird." },
+          {
+            word: "Glühweinstand",
+            hint: "Heiß, süß und perfekt für frostige Weihnachtsmärkte.",
+          },
+          {
+            word: "Nacktbadestrand",
+            hint: "Hier lässt man alles fallen – außer die Sonnencreme.",
+          },
+          {
+            word: "Kuscheldecke",
+            hint: "Weich, warm und ideal für Netflix-Marathons.",
+          },
+          {
+            word: "Sexspielzeug",
+            hint: "Für solo oder zu zweit – die Spielregeln bestimmst du.",
+          },
+          {
+            word: "Wanderstock",
+            hint: "Dein treuer Begleiter auf steilen Pfaden.",
+          },
+          {
+            word: "Stripclub",
+            hint: "Licht aus, Spot an – und die Kleidung wird weniger.",
+          },
+          {
+            word: "Kaminfeuer",
+            hint: "Knistert romantisch und wärmt von innen wie außen.",
+          },
+          {
+            word: "Lederhose",
+            hint: "Traditionell, eng und ein echter Hingucker auf dem Oktoberfest.",
+          },
+          {
+            word: "Massageöl",
+            hint: "Gleitfreudig und duftend – für entspannte Stunden.",
+          },
+          {
+            word: "Karaokemaschine",
+            hint: "Hier wird jeder zum Star, egal wie falsch gesungen.",
+          },
+          {
+            word: "Fesselspiel",
+            hint: "Seile, Handschellen und viel Vertrauen.",
+          },
+          {
+            word: "Zuckerwatte",
+            hint: "Rosa Wolke, die auf der Zunge zergeht.",
+          },
+          {
+            word: "Pornokino",
+            hint: "Dunkel, anonym und mit Popcorn (manchmal).",
+          },
+          {
+            word: "Hängematte",
+            hint: "Schweben zwischen zwei Bäumen und die Welt vergessen.",
+          },
+          {
+            word: "Vibrator",
+            hint: "Summt zuverlässig und kennt keine Müdigkeit.",
+          },
+          {
+            word: "Lagerfeuer",
+            hint: "Stockbrot, Gitarre und Geschichten bis Mitternacht.",
+          },
+          {
+            word: "Peepshow",
+            hint: "Ein Euro, ein Vorhang, ein kurzer Blick.",
+          },
         ];
 
         const state = {
@@ -134,7 +318,8 @@
           imposter: null,
           word: null,
           revealed: false,
-          active: false
+          active: false,
+          phase: "setup",
         };
 
         const el = {
@@ -154,7 +339,11 @@
           revealHint: document.getElementById("reveal-hint"),
           showCard: document.getElementById("show-card"),
           nextPlayer: document.getElementById("next-player"),
-          restartRound: document.getElementById("restart-round")
+          restartRound: document.getElementById("restart-round"),
+          setupSection: document.getElementById("setup-section"),
+          roundSection: document.getElementById("round-section"),
+          progressIndicator: document.getElementById("progress-indicator"),
+          orderNote: document.getElementById("order-note"),
         };
 
         const safeLocalStorage = {
@@ -173,14 +362,14 @@
             } catch (error) {
               console.warn("Konnte Spieler nicht speichern", error);
             }
-          }
+          },
         };
 
         function init() {
           state.players = safeLocalStorage.get();
+          resetRoundState();
           renderPlayers();
           bindEvents();
-          resetRoundState();
           updateControls();
         }
 
@@ -225,7 +414,9 @@
           }
 
           const normalized = rawName.replace(/\s+/g, " ");
-          const duplicate = state.players.some((name) => name.toLowerCase() === normalized.toLowerCase());
+          const duplicate = state.players.some(
+            (name) => name.toLowerCase() === normalized.toLowerCase()
+          );
           if (duplicate) {
             setFeedback(`${normalized} wurde bereits hinzugefügt.`);
             el.playerInput.value = "";
@@ -247,20 +438,26 @@
         function resetPlayers() {
           state.players = [];
           safeLocalStorage.set(state.players);
-          renderPlayers();
           resetRoundState();
+          renderPlayers();
         }
 
         function renderPlayers() {
           el.playerList.innerHTML = "";
           state.players.forEach((name) => {
             const listItem = document.createElement("li");
-            listItem.className = "flex items-center gap-2 rounded-2xl bg-slate-800 px-4 py-2 text-sm font-medium";
+            listItem.className =
+              "flex items-center gap-2 rounded-2xl bg-slate-800 px-4 py-2 text-sm font-medium";
             listItem.innerHTML = `<span>${name}</span><button type="button" aria-label="${name} entfernen" class="text-slate-400 transition hover:text-red-400" data-remove="${name}">&times;</button>`;
             el.playerList.appendChild(listItem);
           });
           el.playerCount.textContent = `${state.players.length}/5`;
-          setFeedback(state.players.length < 3 ? "Mindestens 3 Spieler:innen notwendig." : "Bereit für eine neue Runde!", state.players.length >= 3);
+          setFeedback(
+            state.players.length < 3
+              ? "Mindestens 3 Spieler:innen notwendig."
+              : "Bereit für eine neue Runde!",
+            state.players.length >= 3
+          );
           updateControls();
         }
 
@@ -271,10 +468,26 @@
             : "text-sm text-slate-400";
         }
 
+        function secureRandomIndex(maxExclusive) {
+          if (maxExclusive <= 0) return 0;
+          const cryptoSource = globalThis.crypto;
+          if (cryptoSource?.getRandomValues) {
+            const buffer = new Uint32Array(1);
+            cryptoSource.getRandomValues(buffer);
+            return Math.floor((buffer[0] / (0xffffffff + 1)) * maxExclusive);
+          }
+          return Math.floor(Math.random() * maxExclusive);
+        }
+
+        function randomItem(collection) {
+          if (!collection.length) return null;
+          return collection[secureRandomIndex(collection.length)];
+        }
+
         function shuffle(array) {
           const clone = [...array];
           for (let i = clone.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = secureRandomIndex(i + 1);
             [clone[i], clone[j]] = [clone[j], clone[i]];
           }
           return clone;
@@ -288,12 +501,16 @@
 
           state.order = shuffle(state.players);
           state.currentIndex = 0;
-          state.imposter = state.order[Math.floor(Math.random() * state.order.length)];
-          state.word = germanWords[Math.floor(Math.random() * germanWords.length)];
+          state.imposter = randomItem(state.order);
+          state.word = randomItem(germanWords) ?? germanWords[0];
           state.revealed = false;
           state.active = true;
+          state.phase = "show";
 
-          setStatus(`Gib an ${state.order[0]}`, "Nur diese Person darf jetzt auf \"Anzeigen\" tippen.");
+          setStatus(
+            `Gib an ${state.order[0]}`,
+            'Nur diese Person darf jetzt auf "Anzeigen" tippen.'
+          );
           hideCard();
           updateControls();
         }
@@ -304,11 +521,16 @@
           const isImposter = currentPlayer === state.imposter;
 
           state.revealed = true;
-          el.revealLabel.textContent = isImposter ? "Rolle" : "Geheimer Begriff";
+          state.phase = "reveal";
+          el.revealLabel.textContent = isImposter
+            ? "Rolle"
+            : "Geheimer Begriff";
           el.revealLabel.className = isImposter
             ? "text-sm uppercase tracking-[0.4em] text-rose-300"
             : "text-sm uppercase tracking-[0.4em] text-emerald-300";
-          el.revealText.textContent = isImposter ? "Du bist der Impostor!" : state.word.word;
+          el.revealText.textContent = isImposter
+            ? "Du bist der Impostor!"
+            : state.word.word;
           el.revealHint.textContent = isImposter
             ? "Erfinde Antworten, ohne aufzufliegen. Stelle Rückfragen und halte dich unauffällig!"
             : `Erkläre den Begriff umsichtig. Hinweis: ${state.word.hint}`;
@@ -326,7 +548,11 @@
             return;
           }
 
-          setStatus(`Gib an ${state.order[state.currentIndex]}`, "Gerät weiterreichen und erst dann auf \"Anzeigen\" tippen.");
+          state.phase = "show";
+          setStatus(
+            `Gib an ${state.order[state.currentIndex]}`,
+            'Gerät weiterreichen und erst dann auf "Anzeigen" tippen.'
+          );
           hideCard();
           updateControls();
         }
@@ -335,11 +561,18 @@
           state.active = false;
           state.currentIndex = -1;
           state.order = [];
-          setStatus("Alle Karten verteilt!", "Ihr könnt jetzt diskutieren und den Impostor entlarven.");
+          state.phase = "discussion";
+          setStatus(
+            "Alle Karten verteilt!",
+            "Ihr könnt jetzt diskutieren und den Impostor entlarven."
+          );
           el.revealLabel.textContent = "Runde abgeschlossen";
-          el.revealLabel.className = "text-sm uppercase tracking-[0.4em] text-slate-400";
+          el.revealLabel.className =
+            "text-sm uppercase tracking-[0.4em] text-slate-400";
           el.revealText.textContent = "Diskussion starten";
-          el.revealHint.textContent = state.word ? `Gesuchter Begriff war: ${state.word.word}.` : "";
+          el.revealHint.textContent = state.word
+            ? `Gesuchter Begriff war: ${state.word.word}.`
+            : "";
           updateControls();
         }
 
@@ -350,14 +583,19 @@
           state.word = null;
           state.revealed = false;
           state.active = false;
-          setStatus("Noch keine Runde aktiv.", "Sobald du startest, erscheint hier die Reihenfolge.");
+          state.phase = "setup";
+          setStatus(
+            "Noch keine Runde aktiv.",
+            "Sobald du startest, erscheint hier die Reihenfolge."
+          );
           hideCard();
         }
 
         function hideCard() {
           el.revealLabel.textContent = "Bereit?";
-          el.revealLabel.className = "text-sm uppercase tracking-[0.4em] text-slate-500";
-          el.revealText.textContent = "Tippe auf \"Anzeigen\".";
+          el.revealLabel.className =
+            "text-sm uppercase tracking-[0.4em] text-slate-500";
+          el.revealText.textContent = 'Tippe auf "Anzeigen".';
           el.revealHint.textContent = "Nur die aktuelle Person darf schauen.";
         }
 
@@ -369,9 +607,44 @@
         function updateControls() {
           const canStart = state.players.length >= 3;
           el.startGame.disabled = !canStart;
-          el.showCard.disabled = !state.active || state.revealed || state.currentIndex === -1;
+          el.showCard.disabled =
+            !state.active || state.revealed || state.currentIndex === -1;
           el.nextPlayer.disabled = !state.active || !state.revealed;
-          el.restartRound.disabled = !canStart;
+          el.restartRound.disabled = !(
+            state.active || state.phase === "discussion"
+          );
+          updateView();
+        }
+
+        function updateView() {
+          const hasEnoughPlayers = state.players.length >= 3;
+          const roundVisible = state.active || hasEnoughPlayers;
+          el.roundSection.classList.toggle("hidden", !roundVisible);
+          el.setupSection.classList.toggle("hidden", state.active);
+
+          const showPhase = state.phase === "show" && state.active;
+          const revealPhase = state.phase === "reveal" && state.active;
+
+          el.showCard.classList.toggle("hidden", !showPhase);
+          el.nextPlayer.classList.toggle("hidden", !revealPhase);
+
+          if (state.active && state.currentIndex !== -1) {
+            el.progressIndicator.textContent = `Spieler ${
+              state.currentIndex + 1
+            } von ${state.order.length}`;
+            el.progressIndicator.classList.remove("hidden");
+          } else {
+            el.progressIndicator.classList.add("hidden");
+          }
+
+          el.orderNote.classList.toggle(
+            "hidden",
+            !(state.active || state.phase === "discussion")
+          );
+          el.restartRound.classList.toggle(
+            "hidden",
+            !(state.active || state.phase === "discussion")
+          );
         }
 
         init();
